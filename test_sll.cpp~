@@ -1,0 +1,117 @@
+#include<iostream>
+#include<string>
+#include "sll.h"
+
+SLL<char> sll;
+
+bool test_length(std::string str){
+  int result = sll.length();
+  int expected = str.length();
+  bool pass = (expected == result);
+  std::cout<< (pass ? "PASSED " : "FAILED ") << " Expected: " << expected << " length( )=> " << result << std::endl;
+  return pass;
+}
+
+bool test_contains(std::string str, char const value){
+  bool result = sll.contains(value);
+  bool expected = (str.find(value) != std::string::npos);
+  bool  pass = (expected == result);
+  std::cout<< (  pass? "PASSED " : "FAILED ") << " Expected: " << expected << " contains ( " << value << " ) => " << result << std::endl;
+  return pass;
+}
+
+bool test_item_at(std::string str, unsigned int const pos){
+  bool pass = true;
+  try{
+     char result = sll.item_at(pos);
+     char expected = str.at(pos);
+      pass = (expected == result);
+     std::cout<< ( pass ?  "PASSED " : "FAILED " ) << " Expected: " << expected << " item_at_( " << pos << " ) => " << result << std::endl;
+  }catch(const std::runtime_error& e){
+     std::cout<< e.what() <<std::endl;
+  }
+  return pass;
+}
+
+bool test_item_at_head(std::string str){
+  bool pass = true;
+  try{
+     char result = sll.item_at_head();
+     char expected = str.at(0);
+     pass = (expected == result);
+     std::cout<< ( pass?  "PASSED " : "FAILED " ) << " Expected: " << expected << " item_at_head( ) => " << result << std::endl;
+  }catch(const std::runtime_error& e){
+     std::cout<< e.what() <<std::endl;
+  }
+  return true;
+}
+
+bool test_item_at_tail(std::string str){
+  bool pass = true;
+  try{
+     char result = sll.item_at_tail();
+     char expected = str.at(str.length()-1);
+     pass = (expected == result);
+     std::cout<< ( pass ?  "PASSED " : "FAILED " ) << " Expected: " << expected << " item_at_tail( ) => " << result << std::endl;
+  }catch(const std::runtime_error& e){
+     std::cout<< e.what() <<std::endl;
+  }
+  return pass;
+}
+
+
+bool test_decapitate(std::string str){
+   bool pass = true;
+  try{
+     char result = sll.decapitate();
+     char expected = str.at(0);
+     pass = (expected == result); 
+     std::cout<< ( pass ?  "PASSED " : "FAILED " ) << " Expected: " << expected << " decapitate( ) => " << result << std::endl;
+  }catch(const std::runtime_error& e){
+     std::cout<< e.what() <<std::endl;
+  }
+  return pass;
+}
+
+bool test_remove_at(std::string str, unsigned int const pos){
+  bool pass = true;
+  try{
+     char result = sll.remove_at(pos);
+     char expected = str.at(pos);
+     pass = (expected == result);
+     std::cout<< ( pass ?  "PASSED " : "FAILED " ) << " Expected: " << expected << " remove_at( " << pos << " ) => " << result << std::endl;
+  }catch(const std::runtime_error& e){
+    std::cout<< "Pos: " << pos << " is not a valid position to remove." <<std::endl;
+  }
+  return pass;
+} 
+
+int main(){
+
+  sll.append('N');
+  sll.append('i');
+  sll.append('m');
+  sll.append('i');
+  sll.append('t');
+  
+  std::string s = sll.to_string();
+
+  bool test_passed = true;
+
+  test_passed = test_passed && test_length(s);
+  test_passed = test_passed && test_contains(s,'N');
+  test_passed = test_passed && test_contains(s,'m');
+  test_passed = test_passed && test_item_at(s,4);
+  test_passed = test_passed && test_item_at(s,0);
+  test_passed = test_passed && test_item_at_head(s);
+  test_passed = test_passed && test_item_at_tail(s);
+  test_passed = test_passed && test_decapitate(s);
+  // Update string
+  s = sll.to_string();
+  test_passed = test_passed && test_remove_at(s,3);
+  
+  std::cout<< (test_passed ? "SUCCESS! " : "FAILURE!") <<std::endl;
+  
+  sll.~SLL();
+  return 0;
+}
