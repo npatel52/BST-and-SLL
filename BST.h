@@ -8,7 +8,7 @@
 
 template <typename T>
 
-class BST: public List<T>{  
+class BST: public List<T>{
  private:
   struct Tree;
   Tree* root;
@@ -115,7 +115,7 @@ unsigned int
 BST<T>::do_getHeight( Tree* root, unsigned int count, unsigned int max){
   if( !root->lTree && !root->rTree ) // at leaf node
     return count > max ? count : max;
-  
+
   if( root->lTree )
     max = do_getHeight( root->lTree, count + 1, max );
 
@@ -124,8 +124,6 @@ BST<T>::do_getHeight( Tree* root, unsigned int count, unsigned int max){
 
   return max;
 }
-
-  
 
 /*************************************
  ************* MIN & MAX ************
@@ -181,10 +179,10 @@ template <typename T>
 unsigned int
 BST<T>::do_even_count( Tree* root ){
   unsigned int count = 0;
-  
+
   if(!(root->data & 1)) // not odd  .......0 & 000000001 yields 0 so !0 for even
       ++count;
-  
+
   if( root ){
     if(root->lTree)
       count += do_even_count( root->lTree );
@@ -213,7 +211,7 @@ template <typename T>
 void
 BST<T>::do_print(Tree* tree, std::string tabs){
   if(tree){
-    
+
 
     if(tree->rTree) // Go all the way right first
       do_print( tree->rTree , tabs + "\t");
@@ -222,49 +220,24 @@ BST<T>::do_print(Tree* tree, std::string tabs){
     if(!tree->rTree){
        std::cout<< tabs << "\t[ ]\n\n"; // Print empty node, Go to next line
     }
-    
+
     std::cout<< tabs << "[ " << tree->data << " : " << tree->count << " ]" <<"\n" << std::endl; // Go to next line
 
     if(!tree->lTree){
        std::cout<< tabs << "\t[ ]\n\n"; // Print empty node, Go to next line
     }
-    
+
     if(tree->lTree) // Go left afterwards
       do_print( tree->lTree, tabs + "\t" );
   }
 }
 
-
-
-
-
-
-
-/*******************************
- ************operator== ********
- ******************************/
-/*template <typename T>
-bool
-BST<T>::operator!=(const BST& rhs){ // the two arguments is reference to the obj to compare
-  bool isequal = true;
-  is_equal(this->root, rhs.root, isequal);
-  return !isequal;
-}
-
-template <typename T>
-bool
-BST<T>::operator==(const BST& rhs){ // the two arguments is reference to the obj to compare
-  bool isequal = true;
-  is_equal(this->root, rhs.root, isequal);
-  return isequal;
-}
-*/
 template <typename T>
 void
 BST<T>::is_equal(Tree* lhs, Tree* rhs, bool& isequal){
-  
+
   if(lhs && rhs){ // both has to non-nullptr to compare values
-    
+
     if(lhs->data == rhs->data && lhs->count == rhs->count){ // check for equality of data and instances
 
       if( lhs->rTree){
@@ -282,7 +255,7 @@ BST<T>::is_equal(Tree* lhs, Tree* rhs, bool& isequal){
     isequal = false;
     return;
   }
-  
+
 }
 
 /********************
@@ -309,8 +282,8 @@ BST<T>::do_leaf_count(Tree* tree){
       return count;
     }
     if( tree->rTree )
-      count += do_leaf_count( tree->rTree ); 
-  } 
+      count += do_leaf_count( tree->rTree );
+  }
   return count;
 }
 
@@ -325,25 +298,13 @@ BST<T>::operator=( const BST<T>& obj){
     this->clear();
     make_copy(obj.root, this->root);
   }
-  
+
   return *this;
 }
 
 /***********************************
 ***************move-constructor***
 *********************************/
-/*
-template <typename T>
-BST<T>::BST( BST&& other){
-  // steal from other
-  root = other.root;
-
-  // destruct other
-  other.root = 0;
-
-}
-*/
-
 
 template <typename T>
 void
@@ -354,10 +315,10 @@ BST<T>::insert( T value ) {
     root = new Tree(value);
     std::cout<< "Inserted in root: " << value << std::endl;
   }else{
-    // tmp pointer to tree for traversal 
+    // tmp pointer to tree for traversal
     Tree* tmp = root;
     while(!is_empty(tmp)){
-       // CASE 1: if insertion value is greater than root's data 
+       // CASE 1: if insertion value is greater than root's data
       if( value > tmp->data){
 	// If the right tree is empty then allocat a new Tree with a value
 	if(is_empty( tmp->rTree )){
@@ -408,7 +369,7 @@ BST<T>::BST(const BST& obj){
 template <typename T>
 void
 BST<T>::make_copy(Tree* copyFrom, Tree*& copyTo){
-  
+
   if(copyFrom){
     copyTo = new Tree(copyFrom->data, copyFrom->count);
     if(copyFrom->rTree){
@@ -449,7 +410,7 @@ BST<T>::size(){
   if(!root)
     return 0;
   // Recursive step: There is a tree then find size of the left tree and size of the right tree
-  return root->count + rsize(root->rTree) + lsize(root->lTree); 
+  return root->count + rsize(root->rTree) + lsize(root->lTree);
 }
 
 template <typename T>
@@ -461,7 +422,7 @@ BST<T>::do_clear(Tree* const tree){
     // When the tree has no child
   std::cout<< "Deleting tree with data: " << tree->data << std::endl;
   delete tree;
-  
+
   if(tree->lTree)
     do_clear(tree->lTree);
 
@@ -510,7 +471,7 @@ BST<T>::recursiveDelete(Tree* prevTree, Tree* current){
     delete prevTree;
     prevTree = 0;
     return;
-  }  
+  }
 
   // if lead node reached
   if(is_empty_tree( current )){
@@ -534,7 +495,7 @@ BST<T>::recursiveDelete(Tree* prevTree, Tree* current){
   if(current->lTree){
     recursiveDelete ( current, current->lTree);
   }
-  
+
   recursiveDelete ( prevTree, current);
 }
 
@@ -552,12 +513,12 @@ BST<T>::do_contains ( Tree* tree, T const value ){
   if(!tree){
     return false;
   }
-	
+
   // Match found
   if(tree->data == value){
     return true;
   }
-	
+
   // Value is greater than current tree's value
   // Go right
   if( value > tree->data){
@@ -575,7 +536,7 @@ BST<T>::fill_array(T*& tmp, T const value, int repeated){
   if(repeated){
     *tmp = value;
     ++tmp;
-    fill_array(tmp, value, repeated - 1); 
+    fill_array(tmp, value, repeated - 1);
   }
 }
 
@@ -588,7 +549,7 @@ BST<T>::do_content_as_array(Tree* tree, T*& arr){
 
   // fill the array the number of times it is repeated
     fill_array(arr, tree->data, tree->count);
-    
+
   // Now, check for right tree for larger value
   if(tree->rTree)
     do_content_as_array(tree->rTree, arr);
@@ -599,13 +560,13 @@ BST<T>::do_content_as_array(Tree* tree, T*& arr){
 template <typename T>
 T*
 BST<T>::content_as_array(){
-  // Dynamically allocating size for an array 
+  // Dynamically allocating size for an array
   T* arr = new T[size()];
   T* result = arr;
   if(!is_empty(root)){
     do_content_as_array(root, result);
   }
-  
+
   return arr;
 }
 
@@ -617,14 +578,14 @@ BST<T>::remove(T value){
   if(root)
     root->do_remove(root, value );
    else
-    throw std::runtime_error("remove( value ) => No such value in Tree");  
+    throw std::runtime_error("remove( value ) => No such value in Tree");
 }
 
 // Find if there is such a value in Tree
 template <typename T>
 void
 BST<T>::Tree::do_remove(Tree*& parent, T const value){
-  
+
   if(value == data){ // match found
     if(--count == 0){ // update count
 
@@ -640,26 +601,26 @@ BST<T>::Tree::do_remove(Tree*& parent, T const value){
 	parent = 0;
       }
       return;
-      
+
     }else{
       //count more than one, No deletion required!
       return;
-    }   
+    }
   }
-  
-  
+
+
   if ( value < data ){ // check left
-    if(!lTree){ 
-      throw std::runtime_error("remove( value ) => No such value in Tree ");  
+    if(!lTree){
+      throw std::runtime_error("remove( value ) => No such value in Tree ");
     }
     lTree->do_remove(lTree, value );
   }else if( value > data ) { // check right
-     if(!rTree){ 
-     throw std::runtime_error("remove( value ) => No such value in Tree ");  
+     if(!rTree){
+     throw std::runtime_error("remove( value ) => No such value in Tree ");
     }
     rTree->do_remove(rTree, value );
   }
-  
+
 }
 
 
@@ -673,7 +634,7 @@ BST<T>::Tree::do_left_replacement(Tree*& parent, Tree*& replacement){
       replacement = rTree;
       rTree->do_left_replacement( parent, replacement);
     }else{
-      replacement = parent->lTree; 
+      replacement = parent->lTree;
       rTree->do_left_replacement( parent, replacement);
     }
   }else{
@@ -708,7 +669,7 @@ BST<T>::Tree::do_right_replacement(Tree*& parent, Tree*& replacement){
       replacement = lTree;
       rTree->do_right_replacement( parent, replacement);
     }else{
-      replacement = parent->rTree; 
+      replacement = parent->rTree;
       rTree->do_right_replacement( parent, replacement);
     }
   }else{
